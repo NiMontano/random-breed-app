@@ -1,32 +1,27 @@
 
-function getDogBreed() {
-    let getTheBreed = `https://dog.ceo/api/breeds/image/random/${nameOfBreed}`
-    //const options = {method: 'GET'};
+function renderDogBreed() {
+    let getTheBreed = `https://dog.ceo/api/breed/${nameOfBreed}/images/random`
     fetch(getTheBreed)
     .then(response => response.json())
-    .then(responseJson => showTheDog(responseJson));
+    .then(responseJson => showTheDog(responseJson))
+    .catch(error => alert('No such doggo'));
 };
 
 
 function showTheDog(responseJson) {
     $('.results-img').empty();
     randomDog = responseJson.message;
-    $('.results-img').append(randomDog);
+    $('.results-img').append(`<img src="${randomDog}"></img>`);
 }
 
-function howManyDogs() {
-    numberOfDogs = 3;
-    getDogImages();
-    console.log(numberOfDogs);
+function breedOfDog() {
     $('form').submit('click', function(event) {
-        numberOfDogs = $("input[type='number']").val();
+        nameOfBreed = $("input[type='text']").val();
         event.preventDefault();
-        console.log(numberOfDogs);
-        getDogImages(); 
+        renderDogBreed(); 
     });
 };
 
 $(function() {
-    console.log("page running");
-    howManyDogs();
+    breedOfDog();
 });
