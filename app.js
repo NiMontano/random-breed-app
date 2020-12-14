@@ -1,10 +1,18 @@
 
-function renderDogBreed() {
-    let getTheBreed = `https://dog.ceo/api/breed/${nameOfBreed}/images/random`
+function renderDogBreed(nameOfBreed) {
+    let getTheBreed = `https://dog.ceo/api/breed/${nameOfBreed}/images/random`;
+
     fetch(getTheBreed)
-    .then(response => response.json())
-    .then(responseJson => showTheDog(responseJson))
-    .catch(error => alert('No such doggo'));
+        .then(response => {
+            if(!response.ok) {
+                throw new Error(response.error);
+            } 
+            return response.json();
+        })
+        .then(responseJson => showTheDog(responseJson))
+        .catch(error => {
+            $('.results-img').text('No such doggo :(');
+        })
 };
 
 
@@ -18,7 +26,7 @@ function breedOfDog() {
     $('form').submit('click', function(event) {
         nameOfBreed = $("input[type='text']").val();
         event.preventDefault();
-        renderDogBreed(); 
+        renderDogBreed(nameOfBreed); 
     });
 };
 
